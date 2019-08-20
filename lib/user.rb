@@ -51,8 +51,8 @@ class User < ActiveRecord::Base
             hash
         end
         binding.pry
-        choice = @@prompt.select("Choose your destiny?", bets)
-        binding.pry
+        bet = Bet.find(@@prompt.select("Which bet would you like to view more info on?", bets))
+        bet.bet_menu
     end
 
 end
