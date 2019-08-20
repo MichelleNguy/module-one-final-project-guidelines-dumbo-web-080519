@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-    has_many :bets       
+    has_many :bets
     has_many :matches, through: :bets
 
     @@prompt = TTY::Prompt.new
@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
         valid_account
     end
 
-    def self.invalid 
+    def self.invalid
         self.prompt.say("Invalid information! Try again.")
         self.login_account
     end
@@ -29,11 +29,11 @@ class User < ActiveRecord::Base
         user.password == password ? true : false
     end
 
-    def self.create_account 
+    def self.create_account
         name_choice = self.prompt.ask("What name would you like to use?", required: true).downcase
         binding.pry
         search_for_name = self.validate_name(name_choice)
-        if search_for_name 
+        if search_for_name
             self.prompt.say("Unfortunately, an account with that name already exist. Please try again.")
             self.create_account
         end
@@ -42,14 +42,38 @@ class User < ActiveRecord::Base
     end
 
     def account_settings
-        puts "Hi, my name is #{self.name}"
+        @@prompt.select("Hi, my name is #{self.name}") do |menu|
+          menu.choice "I would like to add money to my account?", -> {self.add_funds}
+          menu.choice "I would like to change my password?", -> {self.change_password}
+          menu.choice "I would like to delete my account?", -> {self.delete_account}
+          menu.choice "Go back to main menu", -> {"main_menu"}
+        end
+    end
+
+    def add_funds
+       amount = @@prompt.ask("How much would you like to add to your account?", required: true, validate: /\A\d{3}\Z/, convert: :int)
+       new_amount = self.funds + amount
+       self.update(funds: new_amount)
+       @@prompt.say("You have added $#{amount} to your account. The new balance is $#{new_amount}.")
+    end
+
+    def change_password
+      changed_pass = @@prompt.ask("What is your new password?")
+      self.update(password: changed_pass)
+    end
+
+    def delete_account
+      self.destroy
+      puts "Your account has been deleted."
     end
 
     def bet_history
-        #grab bets and display in a nice way
-        self.bets.each_with_index do |bet, i|
-            @@prompt.say("#{i + 1}")
+        bets = self.bets.inject({}) do |hash, bet|
+            hash["$#{bet.amount} on #{bet.for} to win"] = bet.id
+            hash
         end
+        bet = Bet.find(@@prompt.select("Choose your destiny?", bets))
+        bet.bet_menu
     end
 
 end
