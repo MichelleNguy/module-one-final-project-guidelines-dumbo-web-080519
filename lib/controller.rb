@@ -1,8 +1,9 @@
 class Controller
 
     attr_reader :prompt
+    attr_accessor :user
 
-    def initialize    
+    def initialize
         @prompt = TTY::Prompt.new
     end
 
@@ -26,5 +27,3 @@ class Controller
     end
 
 end
-
-
