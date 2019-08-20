@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
     end
 
     def self.login_account
-        valid_account = self.validate_name(self.prompt.ask("What is your name?", required: true))
+        valid_account = self.validate_name(self.prompt.ask("What is your name?", required: true).downcase)
         return self.invalid if !valid_account
         valid_password = self.validate_password(self.prompt.ask("What is your password?", required: true), valid_account)
         return self.invalid if !valid_password
@@ -39,6 +39,17 @@ class User < ActiveRecord::Base
         end
         password = self.prompt.ask("What password would you like to use?", required: true)
         User.create(name: name_choice, password: password)
+    end
+
+    def account_settings
+        puts "Hi, my name is #{self.name}"
+    end
+
+    def bet_history
+        #grab bets and display in a nice way
+        self.bets.each_with_index do |bet, i|
+            @@prompt.say("#{i + 1}")
+        end
     end
 
 end

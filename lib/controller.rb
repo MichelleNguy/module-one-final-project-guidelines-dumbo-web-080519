@@ -17,6 +17,14 @@ class Controller
         end
     end
 
+    def main_menu
+        prompt.select("What would you like to view.") do |menu|
+            menu.choice 'account setting', -> { "account_settings" }
+            menu.choice 'upcoming matches', -> { "upcoming"}
+            menu.choice 'bet history', -> { "bet_history" }
+        end
+    end
+
 end
 
 
