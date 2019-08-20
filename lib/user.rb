@@ -2,7 +2,6 @@ class User < ActiveRecord::Base
     has_many :bets       
     has_many :matches, through: :bets
 
-
     @@prompt = TTY::Prompt.new
 
     def self.prompt
