@@ -46,10 +46,13 @@ class User < ActiveRecord::Base
     end
 
     def bet_history
-        #grab bets and display in a nice way
-        self.bets.each_with_index do |bet, i|
-            @@prompt.say("#{i + 1}")
+        bets = self.bets.inject({}) do |hash, bet|
+            hash["$#{bet.amount} on #{bet.for} to win"] = bet.id
+            hash
         end
+        binding.pry
+        choice = @@prompt.select("Choose your destiny?", bets)
+        binding.pry
     end
 
 end
