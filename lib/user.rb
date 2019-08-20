@@ -1,35 +1,45 @@
 class User < ActiveRecord::Base
+    has_many :bets       
+    has_many :matches, through: :bets
 
-    @@prompt = TTY:Prompt.new
+
+    @@prompt = TTY::Prompt.new
 
     def self.prompt
         @@prompt
     end
 
-    def login_account
-        valid_account = validate_name(self.prompt.ask("What is your name?", required: true))
-        if !valid_account
-            self.prompt.say("Invalid account. Please enter an existing account.")
-            login_account
-        end
-        valid_password = validate_password(self.prompt.ask("What is your password?", required: true), valid_account)
-        if !valid_password 
-            self.prompt.say("Invalid password.")
-            login_account
-        end
+    def self.login_account
+        valid_account = self.validate_name(self.prompt.ask("What is your name?", required: true))
+        return self.invalid if !valid_account
+        valid_password = self.validate_password(self.prompt.ask("What is your password?", required: true), valid_account)
+        return self.invalid if !valid_password
         valid_account
     end
 
-    def valididate_name(name_to_validate)
-        User.find_by(name: name_to_find)
+    def self.invalid 
+        self.prompt.say("Invalid information! Try again.")
+        self.login_account
     end
 
-    def validate_password(password, user)
+    def self.validate_name(name_to_validate)
+        User.find_by(name: name_to_validate)
+    end
+
+    def self.validate_password(password, user)
         user.password == password ? true : false
     end
 
-    def create_account 
-
+    def self.create_account 
+        name_choice = self.prompt.ask("What name would you like to use?", required: true).downcase
+        binding.pry
+        search_for_name = self.validate_name(name_choice)
+        if search_for_name 
+            self.prompt.say("Unfortunately, an account with that name already exist. Please try again.")
+            self.create_account
+        end
+        password = self.prompt.ask("What password would you like to use?", required: true)
+        User.create(name: name_choice, password: password)
     end
 
 end
