@@ -4,11 +4,15 @@ class Controller
     attr_accessor :user
 
     def initialize
-        @prompt = TTY::Prompt.new
+        @prompt = TTY::Prompt.new(active_color: :red)
     end
 
     def greet_user
-        prompt.say("Welcome to AMBet!")
+        return_string = ""
+        File.foreach("lib/welcome.txt") do |line|
+            return_string += line
+        end
+        puts return_string.colorize(:light_black)
     end
 
     def login_menu
@@ -20,9 +24,10 @@ class Controller
 
     def main_menu
         prompt.select("What would you like to view.") do |menu|
-            menu.choice 'account setting', -> { "account_settings" }
-            menu.choice 'upcoming matches', -> { "upcoming"}
-            menu.choice 'bet history', -> { "bet_history" }
+            menu.choice 'account setting', -> { self.user.send("account_settings") }
+            menu.choice 'upcoming matches', -> { Match.send("upcoming", user)}
+            menu.choice 'bet history', -> { self.user.send("bet_history") }
+            menu.choice "exit application", -> { "exit"}
         end
     end
 

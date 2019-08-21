@@ -2,11 +2,13 @@ require_relative '../config/environment'
 
 controller = Controller.new
 controller.greet_user
-user = controller.login_menu
-choice = controller.main_menu
+controller.user = controller.login_menu
 
-choice == "upcoming" ? Match.upcoming : user.send(choice)
-
+choice = nil
+while choice != "exit"
+    controller.user = User.find(controller.user.id)
+    choice = controller.main_menu
+end
 
 binding.pry
 0

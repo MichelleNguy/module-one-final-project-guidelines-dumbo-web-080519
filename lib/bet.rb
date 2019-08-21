@@ -5,21 +5,26 @@ class Bet < ActiveRecord::Base
     @@prompt = TTY::Prompt.new
 
     def display_info
-      puts "you bet #{self.amount} on #{self.for} to win."
-      puts "The status of this bet is #{self.status}"
+        match = Match.find(self.match_id)
+        puts "--------------------------------------------"
+        puts "#{self.for.upcase} @ $#{self.amount}"
+        puts "#{match.home_team.upcase} v. #{match.away_team.upcase}"
+        #puts "You bet #{self.amount} on #{self.for} to win."
+        puts "STATUS: #{self.status}"
+        puts "--------------------------------------------"
     end
 
     def bet_menu
         display_info
-      if self.status == "Pending"
-        self.pending_menu
-      else
-        self.graded_menu
-      end
+        if self.status == "Pending"
+            self.pending_menu
+        else
+            self.graded_menu
+        end
     end
 
     def pending_menu
-        @@prompt.select("zwhat would you like to do?") do |menu|
+        @@prompt.select("What would you like to do?") do |menu|
           menu.choice "Cancel bet", -> {self.cancel_bet}
           menu.choice "Go back to main menu", -> {"main_menu"}
         end
@@ -34,7 +39,7 @@ class Bet < ActiveRecord::Base
 
     def cancel_bet
       puts "Bet has been cancelled."
-      self.destroy
+      self.update(status: "Cancelled")
     end
 
 
