@@ -88,11 +88,17 @@ class User < ActiveRecord::Base
     end
 
     def delete_account
-        confirmation = @@prompt.yes?("Are you sure you want to delete your account?")
-        return @@prompt.say("No changes have been made.") if !confirmation
+        return @@prompt.say("No changes have been made.") if !(confirm)
         self.destroy
         @@prompt.say("Your account has been deleted. Goodbye!")
         "exit"
+    end
+
+    def confirm
+        @@prompt.select("Are you sure you want to delete your account? ") do |menu| 
+            menu.choice "Yes", -> { true }
+            menu.choice "No" , -> { false }
+        end
     end
 
     def bet_history
