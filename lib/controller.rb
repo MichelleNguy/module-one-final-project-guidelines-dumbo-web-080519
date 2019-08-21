@@ -22,6 +22,10 @@ class Controller
         end
     end
 
+    def clear?
+        prompt.keypress("Press any key to continue.")
+    end
+
     def main_menu
         prompt.select("What would you like to view.") do |menu|
             menu.choice 'account setting', -> { self.user.send("account_settings") }

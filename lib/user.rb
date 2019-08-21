@@ -84,7 +84,7 @@ class User < ActiveRecord::Base
 
     def delete_account
         confirmation = @@prompt.yes?("Are you sure you want to delete your account?")
-        binding.pry
+        return @@prompt.say("No changes have been made.") if !confirmation
         self.destroy
         @@prompt.say("Your account has been deleted. Goodbye!")
         "exit"
