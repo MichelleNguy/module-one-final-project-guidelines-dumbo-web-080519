@@ -67,7 +67,12 @@ class User < ActiveRecord::Base
     end
 
     def add_funds
-       amount = @@prompt.ask("How much would you like to add to your account?", required: true, validate: /\A\d{3}\Z/, convert: :int)
+       amount = @@prompt.ask("How much would you like to add to your account?") do |q|
+            q.required(true) 
+            q.convert(:int)
+            q.validate(/^[0-9]*$/)
+            q.messages[:valid?] = "Please enter a valid amount."
+       end
        self.change_funds(amount, "add")
        @@prompt.say("You have added $#{amount} to your account. The new balance is $#{self.funds}.")
     end

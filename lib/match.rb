@@ -25,7 +25,12 @@ class Match < ActiveRecord::Base
     end
 
     def new_bet(user)
-        amount = @@prompt.ask("How much would you like to bet on this match?", required: true, convert: :int)
+        amount = @@prompt.ask("How much would you like to bet on this match?") do |q|
+            q.required(true) 
+            q.convert(:int)
+            q.validate(/^[0-9]*$/)
+            q.messages[:valid?] = "Please enter a valid amount."
+        end
         if !user.can_bet?(amount)
             puts "Insufficent funds for wager."
             return self.new_bet(user)
