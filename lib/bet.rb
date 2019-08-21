@@ -38,8 +38,10 @@ class Bet < ActiveRecord::Base
 
 
     def cancel_bet
-      puts "Bet has been cancelled."
-      self.update(status: "Cancelled")
+        self.update(status: "Cancelled")
+        user = User.find(self.user_id)
+        user.change_funds(self.amount, "add")
+        puts "Bet has been cancelled and #{self.amount} has been returned to your account."
     end
 
 
