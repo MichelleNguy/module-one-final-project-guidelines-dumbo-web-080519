@@ -4,10 +4,6 @@ class User < ActiveRecord::Base
 
     @@prompt = TTY::Prompt.new
 
-    # def self.prompt
-    #     @@prompt
-    # end
-
     def self.login_account
         valid_account = self.validate_name(@@prompt.ask("What is your name?", required: true).downcase)
         return self.invalid if !valid_account
@@ -34,7 +30,7 @@ class User < ActiveRecord::Base
         search_for_name = self.validate_name(name_choice)
         if search_for_name
             @@prompt.say("Unfortunately, an account with that name already exist. Please try again.")
-            self.create_account
+            return self.create_account
         end
         password = @@prompt.ask("What password would you like to use?", required: true)
         User.create(name: name_choice, password: password, funds: 0)
@@ -65,7 +61,7 @@ class User < ActiveRecord::Base
         40.times { ret+= "-"}
         ret += "\nAccount: #{self.name} | Available: $#{self.funds}"
         ret += "\nTotal live bets: #{self.live_bets.count}"
-        ret += "\nTotal in action: #{self.live_bets_total}\n"
+        ret += "\nTotal in action: $#{self.live_bets_total}\n"
         40.times { ret+= "-"}
         puts ret.colorize(:blue)
     end
@@ -81,15 +77,17 @@ class User < ActiveRecord::Base
     end
 
     def change_password
-      changed_pass = @@prompt.ask("What is your new password?", required: true)
-      self.update(password: changed_pass)
-      @@prompt.say("Password has been changed.")
+        changed_pass = @@prompt.ask("What is your new password?", required: true)
+        self.update(password: changed_pass)
+        @@prompt.say("Password has been changed.")
     end
 
     def delete_account
-      self.destroy
-      @@prompt.say("Your account has been deleted. Goodbye!")
-      "exit"
+        confirmation = @@prompt.yes?("Are you sure you want to delete your account?")
+        binding.pry
+        self.destroy
+        @@prompt.say("Your account has been deleted. Goodbye!")
+        "exit"
     end
 
     def bet_history
