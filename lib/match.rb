@@ -35,11 +35,15 @@ class Match < ActiveRecord::Base
 
     def new_bet(user)
         amount = @@prompt.ask("How much would you like to bet on this match?", required: true, convert: :int)
+        return puts "Insufficent funds for wager." if !user.can_bet?(amount)
+        user.deduct_funds(amount)
         for_who = @@prompt.select("Who do you want to bet on?") do |who|
             who.choice(self.home_team)
             who.choice(self.away_team)
         end
         Bet.create(user_id: user.id, match_id: self.id, amount: amount, for: for_who, status: "Pending")
+        @@prompt.say("Bet $#{amount} @ #{for_who} has been recorded.")
     end
+
 
 end

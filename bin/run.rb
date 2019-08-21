@@ -1,5 +1,6 @@
 require_relative '../config/environment'
 
+system "clear"
 controller = Controller.new
 controller.greet_user
 controller.user = controller.login_menu

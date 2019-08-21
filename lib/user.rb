@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
     def self.login_account
         valid_account = self.validate_name(@@prompt.ask("What is your name?", required: true).downcase)
         return self.invalid if !valid_account
-        valid_password = self.validate_password(@@prompt.ask("What is your password?", required: true), valid_account)
+        valid_password = self.validate_password(@@prompt.mask("What is your password?", required: true), valid_account)
         return self.invalid if !valid_password
         valid_account
     end
@@ -41,6 +41,7 @@ class User < ActiveRecord::Base
     end
 
     def account_settings
+        self.display_account_info
         @@prompt.select("Options for account: #{self.name}") do |menu|
           menu.choice "add money to account?", -> {self.add_funds}
           menu.choice "change my password?", -> {self.change_password}
@@ -54,6 +55,10 @@ class User < ActiveRecord::Base
        new_amount = self.funds + amount
        self.update(funds: new_amount)
        @@prompt.say("You have added $#{amount} to your account. The new balance is $#{new_amount}.")
+    end
+
+    def deduct_funds(amount)
+        self.funds -= amount
     end
 
     def change_password
@@ -77,5 +82,10 @@ class User < ActiveRecord::Base
         bet = Bet.find(@@prompt.select("Which bet would you like to view more info on?", bets))
         bet.bet_menu
     end
+
+    def can_bet?(amount)
+        self.funds >= amount ? true : false
+    end
+
 
 end
