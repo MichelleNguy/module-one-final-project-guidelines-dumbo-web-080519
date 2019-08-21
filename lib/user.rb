@@ -50,15 +50,34 @@ class User < ActiveRecord::Base
         end
     end
 
-    def add_funds
-       amount = @@prompt.ask("How much would you like to add to your account?", required: true, validate: /\A\d{3}\Z/, convert: :int)
-       new_amount = self.funds + amount
-       self.update(funds: new_amount)
-       @@prompt.say("You have added $#{amount} to your account. The new balance is $#{new_amount}.")
+    ## bets that are 'pending'
+    def live_bets
+        self.bets.select {|bet| bet.status == "Pending"}
     end
 
-    def deduct_funds(amount)
-        self.funds -= amount
+    ## total of all live bets
+    def live_bets_total
+        (self.live_bets.map {|bet| bet.amount }).sum
+    end
+
+    def display_account_info 
+        ret = ""
+        40.times { ret+= "-"}
+        ret += "\nAccount: #{self.name} | Available: $#{self.funds}"
+        ret += "\nTotal live bets: #{self.live_bets.count}"
+        ret += "\nTotal in action: #{self.live_bets_total}\n"
+        40.times { ret+= "-"}
+        puts ret.colorize(:blue)
+    end
+
+    def add_funds
+       amount = @@prompt.ask("How much would you like to add to your account?", required: true, validate: /\A\d{3}\Z/, convert: :int)
+       self.change_funds(amount, "add")
+       @@prompt.say("You have added $#{amount} to your account. The new balance is $#{self.funds}.")
+    end
+
+    def change_funds(amount, type)
+        type == "add" ? self.update(funds: (self.funds += amount)) : self.update(funds: (self.funds -= amount))
     end
 
     def change_password

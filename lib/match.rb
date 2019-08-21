@@ -35,8 +35,11 @@ class Match < ActiveRecord::Base
 
     def new_bet(user)
         amount = @@prompt.ask("How much would you like to bet on this match?", required: true, convert: :int)
-        return puts "Insufficent funds for wager." if !user.can_bet?(amount)
-        user.deduct_funds(amount)
+        if !user.can_bet?(amount)
+            puts "Insufficent funds for wager."
+            return self.new_bet(user)
+        end
+        user.change_funds(amount, "subtract")
         for_who = @@prompt.select("Who do you want to bet on?") do |who|
             who.choice(self.home_team)
             who.choice(self.away_team)

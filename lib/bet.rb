@@ -6,13 +6,13 @@ class Bet < ActiveRecord::Base
 
     def display_info
         match = Match.find(self.match_id)
-        puts "--------------------------------------------"
-        puts "#{self.for.upcase} @ $#{self.amount}"
+        puts "--------------------------------------------".colorize(:red)
+        puts "#{self.for.upcase} @ $#{self.amount} | STATUS: #{self.status}" 
         puts "#{match.home_team.upcase} v. #{match.away_team.upcase}"
-        #puts "You bet #{self.amount} on #{self.for} to win."
-        puts "STATUS: #{self.status}"
-        puts "--------------------------------------------"
+        puts "#{match.stadium} | #{match.date}"
+        puts "--------------------------------------------".colorize(:red)
     end
+
 
     def bet_menu
         display_info
