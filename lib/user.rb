@@ -94,8 +94,8 @@ class User < ActiveRecord::Base
 
     def bet_history
         return puts "No bets to view." if self.bets.empty?
-        bets = self.bets.inject({}) do |hash, bet|
-            hash["#{bet.for} @$#{bet.amount} | #{bet.status}"] = bet.id
+        bets = self.bets.each_with_index.inject({}) do |hash, (bet, i)|
+            hash["#{i + 1}| #{bet.for} @$#{bet.amount} | #{bet.status}"] = bet.id
             hash
         end
         bet = Bet.find(@@prompt.select("Which bet would you like to view more info on?", bets))

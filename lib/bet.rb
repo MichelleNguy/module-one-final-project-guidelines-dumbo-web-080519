@@ -44,6 +44,4 @@ class Bet < ActiveRecord::Base
         puts "Bet has been cancelled and #{self.amount} has been returned to your account."
     end
 
-
-
 end

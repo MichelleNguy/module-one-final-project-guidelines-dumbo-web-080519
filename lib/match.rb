@@ -4,15 +4,6 @@ class Match < ActiveRecord::Base
 
     @@prompt = TTY::Prompt.new(active_color: :red)
 
-    # def self.upcoming
-    #     ungraded_matches = self.all.select {|match| match.home_score == nil}
-    #     ungraded_matches.each_with_index do |match, i|
-    #         puts "---------------------------------------".colorize(:light_black)
-    #         puts "#{i + 1}| #{match.home_team.upcase} v. #{match.away_team.upcase} | #{match.stadium} | #{match.date}"
-    #         puts "---------------------------------------".colorize(:light_black) if i == ungraded_matches.size - 1
-    #     end
-    # end
-
     def self.ungraded_matches 
         self.all.select {|match| match.home_score == nil}
     end
