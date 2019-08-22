@@ -16,24 +16,16 @@ class Bet < ActiveRecord::Base
 
     def bet_menu
         display_info
-        if self.status == "Pending"
-            self.pending_menu
-        else
-            self.graded_menu
-        end
+        self.status == "Pending" ? bet_submenu("Pending") : bet_submenu("Graded")
     end
 
-    def pending_menu
+    def bet_submenu(status)
         @@prompt.select("What would you like to do?") do |menu|
-          menu.choice "Cancel bet", -> {self.cancel_bet}
-          menu.choice "Go back to main menu", -> {"main_menu"}
+          if status == "Pending"
+            menu.choice "Cancel bet", -> {self.cancel_bet}
+          end
+            menu.choice "Go back to main menu", -> {"main_menu"}
         end
-    end
-
-    def graded_menu
-        @@prompt.select("What would you like to do?") do |menu|
-        menu.choice "Go back to main menu", -> {"main_menu"}
-      end
     end
 
 
