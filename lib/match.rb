@@ -8,9 +8,17 @@ class Match < ActiveRecord::Base
         self.all.select {|match| match.home_score == nil}
     end
 
+    def self.pad_match_display(home, away, stadium, date)
+        home = sprintf("%-15s", home)
+        away = sprintf("%15s", away)
+        stadium = sprintf("%-20s", stadium)
+        "#{home} vs. #{away} | #{stadium} | #{date}"
+    end
+
     def self.options_to_display
         matches = self.ungraded_matches.inject({}) do |hash, match|
-            hash["#{match.home_team.upcase} v. #{match.away_team.upcase} | #{match.stadium} | #{match.date}"] = match.id
+            display = self.pad_match_display(match.home_team, match.away_team, match.stadium, match.date)
+            hash[display] = match.id
             hash
         end
         matches["Return to main menu"] = "main menu"
