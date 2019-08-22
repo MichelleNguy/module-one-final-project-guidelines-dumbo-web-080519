@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
         valid_account = self.validate_name(@@prompt.ask("What is your name?", required: true).downcase)
         return self.invalid if !valid_account
         valid_password = self.validate_password(@@prompt.mask("What is your password?", required: true), valid_account)
-        return self.invalid if !valid_password
+        return self.login_account if !valid_password
         valid_account
     end
 
