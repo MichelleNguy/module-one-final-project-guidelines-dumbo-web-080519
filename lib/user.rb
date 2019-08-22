@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
     has_many :bets
     has_many :matches, through: :bets
 
-    @@prompt = TTY::Prompt.new
+    @@prompt = TTY::Prompt.new(active_color: :red)
 
     def self.login_account
         valid_account = self.validate_name(@@prompt.ask("What is your name?", required: true).downcase)
@@ -101,10 +101,17 @@ class User < ActiveRecord::Base
         end
     end
 
+    def pad_bet_display(index, for_who, amount, status)
+        for_who = sprintf("%-15s", for_who )
+        amount = sprintf("%-10d", amount)
+        "#{index}| #{for_who} | $#{amount} | #{status}"
+    end
+
     def bet_history
         return puts "No bets to view." if self.bets.empty?
         bets = self.bets.each_with_index.inject({}) do |hash, (bet, i)|
-            hash["#{i + 1}| #{bet.for} @$#{bet.amount} | #{bet.status}"] = bet.id
+            key = pad_bet_display((i + 1), bet.for, bet.amount, bet.status )
+            hash[key] = bet.id
             hash
         end
         bet = Bet.find(@@prompt.select("Which bet would you like to view more info on?", bets))
