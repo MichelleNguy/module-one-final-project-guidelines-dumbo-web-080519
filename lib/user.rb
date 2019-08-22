@@ -13,8 +13,8 @@ class User < ActiveRecord::Base
     end
 
     def self.invalid
-        @@prompt.say("Invalid information! Try again.")
-        self.login_account
+        @@prompt.say("Invalid information! Bringing you to account creation.")
+        self.create_account
     end
 
     def self.validate_name(name_to_validate)

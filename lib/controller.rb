@@ -27,6 +27,7 @@ class Controller
     end
 
     def main_menu
+        user.display_account_info
         prompt.select("What would you like to view.") do |menu|
             menu.choice 'account setting', -> { self.user.send("account_settings") }
             menu.choice 'upcoming matches', -> { Match.send("upcoming", user)}
