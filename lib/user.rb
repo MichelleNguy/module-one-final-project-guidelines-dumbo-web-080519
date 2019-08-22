@@ -32,6 +32,7 @@ class User < ActiveRecord::Base
             @@prompt.say("Unfortunately, an account with that name already exist. Please try again.")
             return self.create_account
         end
+        return self.create_account if !(Controller.confirm("Create an account with the username #{name_choice}?"))
         password = @@prompt.ask("What password would you like to use?", required: true)
         User.create(name: name_choice, password: password, funds: 0)
     end
@@ -88,18 +89,18 @@ class User < ActiveRecord::Base
     end
 
     def delete_account
-        return @@prompt.say("No changes have been made.") if !(confirm)
+        return @@prompt.say("No changes have been made.") if !(Controller.confirm("Are you sure you want to delete your account?"))
         self.destroy
         @@prompt.say("Your account has been deleted. Goodbye!")
         "exit"
     end
 
-    def confirm
-        @@prompt.select("Are you sure you want to delete your account? ") do |menu| 
-            menu.choice "Yes", -> { true }
-            menu.choice "No" , -> { false }
-        end
-    end
+    # def confirm(confirmation_message)
+    #     @@prompt.select(confirmation_message) do |menu| 
+    #         menu.choice "Yes", -> { true }
+    #         menu.choice "No" , -> { false }
+    #     end
+    # end
 
     def pad_bet_display(index, for_who, amount, status)
         for_who = sprintf("%-15s", for_who )
