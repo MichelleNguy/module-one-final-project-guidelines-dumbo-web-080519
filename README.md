@@ -16,17 +16,21 @@ Once the User logs in the User will be taken to the Main Menu screen. The user�
 
 Upon selecting “Account settings” the user will be taken to the account settings menu. The user’s profile information will be visible on top of the menu, oncer again. The user will have four more actionable options available to them.
 
-    - add money to account
-            This option will allow the user to add money to their fund(User will             be unable to enter arbitrary letters or symbols. User may only                 enter integers.) The user will receive a message of the changes                 made to the fund.
+```add money to account```
 
-    - change my password
-            This option will allow the user to change their account password.             The user will be given a message that the password has been        changed.
+This option will allow the user to add money to their fund(User will be unable to enter arbitrary letters or symbols. User may only enter integers.) The user will receive a message of the changes made to the fund.
 
-    - delete account
-            This option will allow the user to delete their account. The user will be prompted for a confirmation. If the User confirms the deletion the user account will be deleted. A user will be given a message that the account has been deleted.
+```change my password```
 
-    - return to main menu
-            This option will return the user to the main menu.
+This option will allow the user to change their account password. The user will be given a message that the password has been changed.
+
+```delete account```
+
+This option will allow the user to delete their account. The user will be prompted for a confirmation. If the User confirms the deletion the user account will be deleted. A user will be given a message that the account has been deleted.
+
+```return to main menu```
+
+This option will return the user to the main menu.
 
 Upon selecting ```upcoming matches``` the user will have the ability to view the future matches. The user will have the ability to place bets on the matches. The user will have the ability to select the team they want to bet on and the amount they want to bet (the user will be unable to wager more money than their available fund.)
 
