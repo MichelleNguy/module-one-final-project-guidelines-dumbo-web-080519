@@ -1,59 +1,40 @@
-# Module One Final Project Guidelines
+### Welcome to AMBet
+Created by: Michelle and Avi
 
-Congratulations, you're at the end of module one! You've worked crazy hard to get here and have learned a ton.
+This app is designed to give sports fans an opportunity to put their sports analysis and prediction skills into action by making bets for upcoming matches.
 
-For your final project, we'll be building a Command Line database application.
+User will have the ability to create an account that would require them to input an unique name.
 
-## Project Requirements
+User will be prompted for a password that would provide them with security and privacy.
 
-### Option One - Data Analytics Project
+Once the User logs in the User will be taken to the Main Menu screen. The user’s profile information will be visible on top of the menu. On the Main Menu; the user will be provided with four actionable options.
 
-1. Access a Sqlite3 Database using ActiveRecord.
-2. You should have at minimum three models including one join model. This means you must have a many-to-many relationship.
-3. You should seed your database using data that you collect either from a CSV, a website by scraping, or an API.
-4. Your models should have methods that answer interesting questions about the data. For example, if you've collected info about movie reviews, what is the most popular movie? What movie has the most reviews?
-5. You should provide a CLI to display the return values of your interesting methods.  
-6. Use good OO design patterns. You should have separate classes for your models and CLI interface.
+- account settings
+- upcoming matches
+- bet history
+- exit application
 
-  **Resource:** [Easy Access APIs](https://github.com/learn-co-curriculum/easy-access-apis)
+Upon selecting “Account settings” the user will be taken to the account settings menu. The user’s profile information will be visible on top of the menu, oncer again. The user will have four more actionable options available to them.
 
-### Option Two - Command Line CRUD App
+    - add money to account
+            This option will allow the user to add money to their fund(User will             be unable to enter arbitrary letters or symbols. User may only                 enter integers.) The user will receive a message of the changes                 made to the fund.
 
-1. Access a Sqlite3 Database using ActiveRecord.
-2. You should have a minimum of three models.
-3. You should build out a CLI to give your user full CRUD ability for at least one of your resources. For example, build out a command line To-Do list. A user should be able to create a new to-do, see all todos, update a todo item, and delete a todo. Todos can be grouped into categories, so that a to-do has many categories and categories have many to-dos.
-4. Use good OO design patterns. You should have separate models for your runner and CLI interface.
+    - change my password
+            This option will allow the user to change their account password.             The user will be given a message that the password has been        changed.
 
-### Brainstorming and Proposing a Project Idea
+    - delete account
+            This option will allow the user to delete their account. The user will be prompted for a confirmation. If the User confirms the deletion the user account will be deleted. A user will be given a message that the account has been deleted.
 
-Projects need to be approved prior to launching into them, so take some time to brainstorm project options that will fulfill the requirements above.  You must have a minimum of four [user stories](https://en.wikipedia.org/wiki/User_story) to help explain how a user will interact with your app.  A user story should follow the general structure of `"As a <role>, I want <goal/desire> so that <benefit>"`. In example, if we were creating an app to randomly choose nearby restaurants on Yelp, we might write:
+    - return to main menu
+            This option will return the user to the main menu.
 
-* As a user, I want to be able to enter my name to retrieve my records
-* As a user, I want to enter a location and be given a random nearby restaurant suggestion
-* As a user, I should be able to reject a suggestion and not see that restaurant suggestion again
-* As a user, I want to be able to save to and retrieve a list of favorite restaurant suggestions
+Upon selecting ```upcoming matches``` the user will have the ability to view the future matches. The user will have the ability to place bets on the matches. The user will have the ability to select the team they want to bet on and the amount they want to bet (the user will be unable to wager more money than their available fund.)
 
-## Instructions
+Upon selecting ```bet history``` the user will have the ability to view the previous bets that has been made and they will have the option to cancel any bet that is still pending. The amount in action on the bet will be refunded to the user. If the user is not interested in canceling their bet they will have the option to return to the main menu.
 
-1. Fork and clone this repository.
-2. Build your application. Make sure to commit early and commit often. Commit messages should be meaningful (clearly describe what you're doing in the commit) and accurate (there should be nothing in the commit that doesn't match the description in the commit message). Good rule of thumb is to commit every 3-7 mins of actual coding time. Most of your commits should have under 15 lines of code and a 2 line commit is perfectly acceptable.
-3. Make sure to create a good README.md with a short description, install instructions, a contributors guide and a link to the license for your code.
-4. Make sure your project checks off each of the above requirements.
-5. Prepare a video demo (narration helps!) describing how a user would interact with your working project.
-    * The video should:
-      - Have an overview of your project.(2 minutes max)
-6. Prepare a presentation to follow your video.(3 minutes max)
-    * Your presentation should:
-      - Describe something you struggled to build, and show us how you ultimately implemented it in your code.
-      - Discuss 3 things you learned in the process of working on this project.
-      - Address, if anything, what you would change or add to what you have today?
-      - Present any code you would like to highlight.   
-7. *OPTIONAL, BUT RECOMMENDED*: Write a blog post about the project and process.
+Upon selecting ```exit application``` the user will be logged out and the application will end.
 
----
-### Common Questions:
-- How do I turn off my SQL logger?
-```ruby
-# in config/environment.rb add this line:
-ActiveRecord::Base.logger = nil
-```
+[![Link to video description](https://img.youtube.com/vi/behYlEntTik/0.jpg)](https://youtu.be/behYlEntTik)
+
+## Note: This is a project app and can not actually be used for sports betting
+
